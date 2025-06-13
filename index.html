@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>live4code - Иван Веденин</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Экран загрузки -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-content">
+            <div class="start-prompt" id="start-prompt">
+                <span class="prompt-text">нажми на меня</span>
+                <div class="prompt-pulse"></div>
+            </div>
+            <div class="typing-container" id="typing-container" style="display: none;">
+                <span id="typing-text" class="typing-text"></span>
+                <span id="cursor" class="cursor">|</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Видео контейнеры -->
+    <div id="video-overlay" class="video-overlay">
+        <video id="hill-video" class="fullscreen-video">
+            <source src="videos/hill.mp4" type="video/mp4">
+        </video>
+        <video id="lake-video" class="fullscreen-video">
+            <source src="videos/lake.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Основной экран - 3D куб -->
+    <div id="main-screen" class="screen">
+        <!-- Звездное небо -->
+        <div class="starfield" id="starfield"></div>
+        <div class="shooting-stars" id="shooting-stars"></div>
+        <div class="space-particles" id="space-particles"></div>
+        <div class="asteroids" id="asteroids"></div>
+        
+        <!-- Туманности -->
+        <div class="nebula purple" style="width: 300px; height: 300px; top: 10%; left: 20%; animation-delay: 0s;"></div>
+        <div class="nebula blue" style="width: 400px; height: 400px; top: 60%; right: 15%; animation-delay: -5s;"></div>
+        <div class="nebula pink" style="width: 250px; height: 250px; bottom: 20%; left: 10%; animation-delay: -10s;"></div>
+        
+        <div class="cube-container">
+            <div class="cube-scene">
+                <div class="cube" id="cube">
+                    <!-- Передняя грань - Главная -->
+                    <div class="cube-face cube-face--front" data-face="front">
+                        <div class="face-content">
+                            <h1 class="main-title">live4code</h1>
+                            <p class="main-subtitle">Software Engineer | Team Lead</p>
+                            <div class="main-tagline">Живу чтобы кодить</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Правая грань - О себе -->
+                    <div class="cube-face cube-face--right" data-face="right">
+                        <div class="face-content">
+                            <h2 class="face-title">О себе</h2>
+                            <div class="about-content">
+                                <div class="intro-section">
+                                    <h3><strong>Иван Веденин</strong></h3>
+                                    <div class="education-cards">
+                                        <div class="education-card">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            <div class="education-text">
+                                                <span class="degree">Бакалавр</span>
+                                                <span class="field">Computer Science</span>
+                                            </div>
+                                        </div>
+                                        <div class="education-card">
+                                            <i class="fas fa-user-graduate"></i>
+                                            <div class="education-text">
+                                                <span class="degree">Магистр</span>
+                                                <span class="field">Управление продуктом</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="principles-section">
+                                    <h4>Мои принципы</h4>
+                                    <div class="principles-grid">
+                                        <div class="principle-card">
+                                            <i class="fas fa-code"></i>
+                                            <h5>Clean Code</h5>
+                                            <p>Код должен читаться как книга</p>
+                                        </div>
+                                        <div class="principle-card">
+                                            <i class="fas fa-rocket"></i>
+                                            <h5>Performance</h5>
+                                            <p>Оптимизация - это искусство</p>
+                                        </div>
+                                        <div class="principle-card">
+                                            <i class="fas fa-users"></i>
+                                            <h5>Team Work</h5>
+                                            <p>Команда сильнее индивидуума</p>
+                                        </div>
+                                        <div class="principle-card">
+                                            <i class="fas fa-lightbulb"></i>
+                                            <h5>Innovation</h5>
+                                            <p>Всегда ищу новые решения</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="motivation-section">
+                                    <p class="motivation-text">
+                                        <i class="fas fa-heart"></i>
+                                        <strong>Живу программированием с 12 лет</strong>
+                                    </p>
+                                </div>
+                                
+                                <div class="stats">
+                                    <div class="stat">
+                                        <span class="stat-number">10+</span>
+                                        <span class="stat-label">лет страсти к коду</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Задняя грань - Навыки -->
+                    <div class="cube-face cube-face--back" data-face="back">
+                        <div class="face-content">
+                            <h2 class="face-title">Навыки</h2>
+                            <div class="skills-grid">
+                                <div class="skill-item">
+                                    <i class="fab fa-java"></i>
+                                    <span>Java</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-leaf"></i>
+                                    <span>Spring</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fab fa-python"></i>
+                                    <span>Python</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-database"></i>
+                                    <span>PostgreSQL</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fab fa-docker"></i>
+                                    <span>Docker</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-stream"></i>
+                                    <span>Kafka</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Management</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span>System Design</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-robot"></i>
+                                    <span>AI-Agent usage</span>
+                                </div>
+                                <div class="skill-item">
+                                    <i class="fas fa-cogs"></i>
+                                    <span>DevOps</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Левая грань - Опыт -->
+                    <div class="cube-face cube-face--left" data-face="left">
+                        <div class="face-content">
+                            <h2 class="face-title">Опыт</h2>
+                            <div class="experience-content">
+                                <div class="experience-item">
+                                    <h3>Software Engineer | Team Lead</h3>
+                                    <div class="company-period">
+                                        <span class="company">Yandex.Market</span>
+                                        <span class="period">Sep 2023 – Apr 2025</span>
+                                    </div>
+                                    <ul class="achievements">
+                                        <li>Руководство командой из 2 разработчиков</li>
+                                        <li>Оптимизация legacy проектов - ускорение в 20x</li>
+                                        <li>Автоматизация процессов - экономия 18 часов</li>
+                                        <li>Менторство новичков в команде</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="experience-item">
+                                    <h3>Junior Software Engineer</h3>
+                                    <div class="company-period">
+                                        <span class="company">Yandex.Market</span>
+                                        <span class="period">Sep 2022 – Sep 2023</span>
+                                    </div>
+                                    <ul class="achievements">
+                                        <li>Освобождение 300 ГБ в базе данных</li>
+                                        <li>Разработка telnet команд для автоматизации</li>
+                                        <li>Мониторинг системных компонентов</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="experience-item">
+                                    <h3>Intern Software Engineer</h3>
+                                    <div class="company-period">
+                                        <span class="company">Yandex.Market</span>
+                                        <span class="period">Jun 2022 – Sep 2022</span>
+                                    </div>
+                                    <ul class="achievements">
+                                        <li>Исправление проблем с message broker</li>
+                                        <li>Переписывание SQL процедур в Java код</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Верхняя грань - Проекты -->
+                    <div class="cube-face cube-face--top" data-face="top">
+                        <div class="face-content">
+                            <h2 class="face-title">Проекты</h2>
+                            <div class="projects-content" id="projects-content">
+                                <div class="projects-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <span>Загружаю проекты...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Нижняя грань - Контакты -->
+                    <div class="cube-face cube-face--bottom" data-face="bottom">
+                        <div class="face-content">
+                            <h2 class="face-title">Контакты</h2>
+                            <div class="contact-links">
+                                <a href="https://github.com/live4code" target="_blank" class="contact-link">
+                                    <i class="fab fa-github"></i>
+                                    <span>GitHub</span>
+                                </a>
+                                <a href="https://linkedin.com/in/live4code" target="_blank" class="contact-link">
+                                    <i class="fab fa-linkedin"></i>
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="https://t.me/live4code" target="_blank" class="contact-link">
+                                    <i class="fab fa-telegram"></i>
+                                    <span>Telegram</span>
+                                </a>
+                                <a href="mailto:live4code@example.com" class="contact-link">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Email</span>
+                                </a>
+                            </div>
+                            <div class="contact-cta">
+                                Let's build something amazing together
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Навигация -->
+            <div class="cube-navigation">
+                <button class="nav-btn active" data-target="front" title="Главная">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button class="nav-btn" data-target="right" title="О себе">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="nav-btn" data-target="back" title="Навыки">
+                    <i class="fas fa-code"></i>
+                </button>
+                <button class="nav-btn" data-target="left" title="Опыт">
+                    <i class="fas fa-briefcase"></i>
+                </button>
+                <button class="nav-btn" data-target="top" title="Проекты">
+                    <i class="fas fa-rocket"></i>
+                </button>
+                <button class="nav-btn" data-target="bottom" title="Контакты">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                
+                <!-- Разделитель -->
+                <div class="nav-divider"></div>
+                
+                <!-- Кнопка управления музыкой -->
+                <button class="nav-btn music-btn" id="music-toggle" title="Музыка">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
