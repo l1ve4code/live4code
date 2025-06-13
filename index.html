@@ -25,15 +25,7 @@
         </div>
     </div>
 
-    <!-- Видео контейнеры -->
-    <div id="video-overlay" class="video-overlay">
-        <video id="hill-video" class="fullscreen-video">
-            <source src="videos/hill.mp4" type="video/mp4">
-        </video>
-        <video id="lake-video" class="fullscreen-video">
-            <source src="videos/lake.mp4" type="video/mp4">
-        </video>
-    </div>
+
 
     <!-- Основной экран - 3D куб -->
     <div id="main-screen" class="screen">
@@ -48,6 +40,245 @@
         <div class="nebula blue" style="width: 400px; height: 400px; top: 60%; right: 15%; animation-delay: -5s;"></div>
         <div class="nebula pink" style="width: 250px; height: 250px; bottom: 20%; left: 10%; animation-delay: -10s;"></div>
         
+        <!-- Мобильный горизонтальный слайдер -->
+        <div class="mobile-slider-container" id="mobile-slider">
+            <div class="mobile-slides-wrapper" id="mobile-slides-wrapper">
+                <!-- Слайд 1: Главная -->
+                <div class="mobile-slide" data-slide="0">
+                    <div class="face-content">
+                        <h1 class="main-title">live4code</h1>
+                        <p class="main-subtitle">Software Engineer | Team Lead</p>
+                        <div class="main-tagline">Живу чтобы кодить</div>
+                    </div>
+                </div>
+                
+                <!-- Слайд 2: О себе -->
+                <div class="mobile-slide" data-slide="1">
+                    <div class="face-content">
+                        <h2 class="face-title">О себе</h2>
+                        <div class="about-content">
+                            <div class="intro-section">
+                                <h3><strong>Иван Веденин</strong></h3>
+                                <div class="education-cards">
+                                    <div class="education-card">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <div class="education-text">
+                                            <span class="degree">Бакалавр</span>
+                                            <span class="field">Computer Science</span>
+                                        </div>
+                                    </div>
+                                    <div class="education-card">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <div class="education-text">
+                                            <span class="degree">Магистр</span>
+                                            <span class="field">Управление продуктом</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="principles-section">
+                                <h4>Мои принципы</h4>
+                                <div class="principles-grid">
+                                    <div class="principle-card">
+                                        <i class="fas fa-code"></i>
+                                        <h5>Clean Code</h5>
+                                        <p>Код должен читаться как книга</p>
+                                    </div>
+                                    <div class="principle-card">
+                                        <i class="fas fa-rocket"></i>
+                                        <h5>Performance</h5>
+                                        <p>Оптимизация - это искусство</p>
+                                    </div>
+                                    <div class="principle-card">
+                                        <i class="fas fa-users"></i>
+                                        <h5>Team Work</h5>
+                                        <p>Команда сильнее индивидуума</p>
+                                    </div>
+                                    <div class="principle-card">
+                                        <i class="fas fa-lightbulb"></i>
+                                        <h5>Innovation</h5>
+                                        <p>Всегда ищу новые решения</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="motivation-section">
+                                <p class="motivation-text">
+                                    <i class="fas fa-heart"></i>
+                                    <strong>Живу программированием с 12 лет</strong>
+                                </p>
+                            </div>
+                            
+                            <div class="stats">
+                                <div class="stat">
+                                    <span class="stat-number">10+</span>
+                                    <span class="stat-label">лет страсти к коду</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Слайд 3: Навыки -->
+                <div class="mobile-slide" data-slide="2">
+                    <div class="face-content">
+                        <h2 class="face-title">Навыки</h2>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <i class="fab fa-java"></i>
+                                <span>Java</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-leaf"></i>
+                                <span>Spring</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fab fa-python"></i>
+                                <span>Python</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-database"></i>
+                                <span>PostgreSQL</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fab fa-docker"></i>
+                                <span>Docker</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-stream"></i>
+                                <span>Kafka</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Management</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-project-diagram"></i>
+                                <span>System Design</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-robot"></i>
+                                <span>AI-Agent usage</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-cogs"></i>
+                                <span>DevOps</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Слайд 4: Опыт -->
+                <div class="mobile-slide" data-slide="3">
+                    <div class="face-content">
+                        <h2 class="face-title">Опыт</h2>
+                        <div class="experience-content">
+                            <div class="experience-item">
+                                <h3>Software Engineer | Team Lead</h3>
+                                <div class="company-period">
+                                    <span class="company">Yandex.Market</span>
+                                    <span class="period">Sep 2023 – Apr 2025</span>
+                                </div>
+                                <ul class="achievements">
+                                    <li>Руководство командой из 2 разработчиков</li>
+                                    <li>Оптимизация legacy проектов - ускорение в 20x</li>
+                                    <li>Автоматизация процессов - экономия 18 часов</li>
+                                    <li>Менторство новичков в команде</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="experience-item">
+                                <h3>Junior Software Engineer</h3>
+                                <div class="company-period">
+                                    <span class="company">Yandex.Market</span>
+                                    <span class="period">Sep 2022 – Sep 2023</span>
+                                </div>
+                                <ul class="achievements">
+                                    <li>Освобождение 300 ГБ в базе данных</li>
+                                    <li>Разработка telnet команд для автоматизации</li>
+                                    <li>Мониторинг системных компонентов</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="experience-item">
+                                <h3>Intern Software Engineer</h3>
+                                <div class="company-period">
+                                    <span class="company">Yandex.Market</span>
+                                    <span class="period">Jun 2022 – Sep 2022</span>
+                                </div>
+                                <ul class="achievements">
+                                    <li>Исправление проблем с message broker</li>
+                                    <li>Переписывание SQL процедур в Java код</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Слайд 5: Проекты -->
+                <div class="mobile-slide" data-slide="4">
+                    <div class="face-content">
+                        <h2 class="face-title">Проекты</h2>
+                        <div class="projects-content" id="mobile-projects-content">
+                            <div class="projects-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Загружаю проекты...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Слайд 6: Контакты -->
+                <div class="mobile-slide" data-slide="5">
+                    <div class="face-content">
+                        <h2 class="face-title">Контакты</h2>
+                        <div class="contact-links">
+                            <a href="https://github.com/live4code" target="_blank" class="contact-link">
+                                <i class="fab fa-github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://linkedin.com/in/live4code" target="_blank" class="contact-link">
+                                <i class="fab fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://t.me/live4code" target="_blank" class="contact-link">
+                                <i class="fab fa-telegram"></i>
+                                <span>Telegram</span>
+                            </a>
+                            <a href="mailto:live4code@example.com" class="contact-link">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </a>
+                        </div>
+                        <div class="contact-cta">
+                            Let's build something amazing together
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Мобильная навигация -->
+            <div class="mobile-navigation" id="mobile-navigation">
+                <button class="mobile-nav-btn" id="mobile-prev-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="mobile-slide-indicators" id="mobile-slide-indicators">
+                    <div class="mobile-slide-indicator active" data-slide="0"></div>
+                    <div class="mobile-slide-indicator" data-slide="1"></div>
+                    <div class="mobile-slide-indicator" data-slide="2"></div>
+                    <div class="mobile-slide-indicator" data-slide="3"></div>
+                    <div class="mobile-slide-indicator" data-slide="4"></div>
+                    <div class="mobile-slide-indicator" data-slide="5"></div>
+                </div>
+                
+                <button class="mobile-nav-btn" id="mobile-next-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
         <div class="cube-container">
             <div class="cube-scene">
                 <div class="cube" id="cube">
@@ -295,6 +526,12 @@
                 <button class="nav-btn music-btn" id="music-toggle" title="Музыка">
                     <i class="fas fa-volume-up"></i>
                 </button>
+            </div>
+            
+            <!-- Подсказка для мобильных -->
+            <div class="mobile-hint" id="mobile-hint">
+                <i class="fas fa-hand-paper"></i>
+                <span>Свайпайте для навигации</span>
             </div>
         </div>
     </div>

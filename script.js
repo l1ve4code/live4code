@@ -4,109 +4,11 @@ const CONFIG = {
     typeSpeed: 120,
     deleteSpeed: 60,
     pauseAfterWord: 300,
-    preVideoDelay: 800,
     pauseAfterSnap: 1000,
-    finalPause: 1500,
-    videoDuration: 4000 // 4 секунды для каждого видео
+    finalPause: 1500
 };
 
-// Video management
-class VideoManager {
-    constructor() {
-        this.videoOverlay = document.getElementById('video-overlay');
-        this.hillVideo = document.getElementById('hill-video');
-        this.lakeVideo = document.getElementById('lake-video');
-        this.currentVideo = null;
-        this.videoTimeout = null;
-        this.init();
-    }
 
-    init() {
-        // Убираем muted атрибут для включения звука
-        this.hillVideo.muted = false;
-        this.lakeVideo.muted = false;
-        
-        // Устанавливаем громкость
-        this.hillVideo.volume = 0.7;
-        this.lakeVideo.volume = 0.7;
-        
-        // Предзагружаем видео
-        this.hillVideo.load();
-        this.lakeVideo.load();
-        
-        // Добавляем обработчики событий
-        [this.hillVideo, this.lakeVideo].forEach(video => {
-            video.addEventListener('loadeddata', () => {
-                console.log(`Видео ${video.id} загружено`);
-            });
-            
-            video.addEventListener('error', (e) => {
-                console.error(`Ошибка загрузки видео ${video.id}:`, e);
-            });
-            
-            video.addEventListener('canplaythrough', () => {
-                console.log(`Видео ${video.id} готово к воспроизведению`);
-            });
-        });
-    }
-
-    async playVideo(videoType) {
-        return new Promise((resolve) => {
-            const video = videoType === 'hill' ? this.hillVideo : this.lakeVideo;
-            
-            // Скрываем текущее видео если оно есть
-            if (this.currentVideo) {
-                this.currentVideo.classList.remove('playing');
-                this.currentVideo.pause();
-                this.currentVideo.currentTime = 0;
-            }
-
-            // Очищаем предыдущий таймаут
-            if (this.videoTimeout) {
-                clearTimeout(this.videoTimeout);
-            }
-
-            // Показываем overlay и новое видео
-            this.videoOverlay.classList.add('active');
-            video.classList.add('playing');
-            this.currentVideo = video;
-
-            // Запускаем видео
-            video.currentTime = 0;
-            
-            // Включаем звук и воспроизводим
-            video.muted = false;
-            video.play().catch(error => {
-                console.error('Ошибка воспроизведения видео:', error);
-                this.hideVideo();
-                resolve();
-            });
-
-            // Останавливаем видео через 4 секунды
-            this.videoTimeout = setTimeout(() => {
-                this.hideVideo();
-                resolve();
-            }, CONFIG.videoDuration);
-        });
-    }
-
-    hideVideo() {
-        if (this.currentVideo) {
-            this.currentVideo.classList.remove('playing');
-            this.currentVideo.pause();
-            this.currentVideo.currentTime = 0;
-        }
-        
-        this.videoOverlay.classList.remove('active');
-        
-        if (this.videoTimeout) {
-            clearTimeout(this.videoTimeout);
-            this.videoTimeout = null;
-        }
-        
-        this.currentVideo = null;
-    }
-}
 
 // Audio management
 class AudioManager {
@@ -234,9 +136,8 @@ class AudioManager {
 
 // Typing animation
 class TypingAnimation {
-    constructor(audioManager, videoManager, audioVisualizer) {
+    constructor(audioManager, audioVisualizer) {
         this.audioManager = audioManager;
-        this.videoManager = videoManager;
         this.audioVisualizer = audioVisualizer;
         this.textElement = document.getElementById('typing-text');
         this.cursorElement = document.getElementById('cursor');
@@ -293,10 +194,7 @@ class TypingAnimation {
         }
     }
 
-    async handleVideoForWord(word) {
-        // Видео-переходы убраны для более чистого эффекта
-        return;
-    }
+
 
     async complete() {
         this.isComplete = true;
@@ -327,7 +225,7 @@ class TypingAnimation {
         console.log('Loading screen:', loadingScreen);
         console.log('Main screen:', mainScreen);
         
-        // Создаем постепенно затемняющийся фон
+        // Создаем динамически затемняющийся фон в зависимости от приближения текста
         const darkeningOverlay = document.createElement('div');
         darkeningOverlay.style.cssText = `
             position: fixed;
@@ -336,44 +234,112 @@ class TypingAnimation {
             width: 100vw;
             height: 100vh;
             background: #000000;
-            z-index: 9999;
+            z-index: 9998;
             opacity: 0;
-            animation: darkenBackground 1.8s cubic-bezier(0.68, 0.0, 0.265, 1.2) forwards;
+            transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         `;
         document.body.appendChild(darkeningOverlay);
+        
+        // Запускаем раннее и динамичное затемнение синхронно с приближением текста
+        setTimeout(() => {
+            darkeningOverlay.style.opacity = '0.2'; // Легкое затемнение
+        }, 50);
+        
+        setTimeout(() => {
+            darkeningOverlay.style.opacity = '0.5'; // Заметное затемнение
+        }, 150);
+        
+        setTimeout(() => {
+            darkeningOverlay.style.opacity = '0.75'; // Сильное затемнение
+        }, 250);
+        
+        setTimeout(() => {
+            darkeningOverlay.style.opacity = '0.9'; // Почти черный
+        }, 350);
+        
+        setTimeout(() => {
+            darkeningOverlay.style.opacity = '1'; // Полностью черный
+        }, 450);
         
         // Быстро скрываем курсор
         this.cursorElement.style.display = 'none';
         
-        // Динамичный переход тонкого текста в жирный
-        this.textElement.style.transition = 'all 0.2s cubic-bezier(0.68, 0.0, 0.265, 1.2)';
-        this.textElement.style.fontWeight = '800';
-        this.textElement.style.transform = 'scale(1.05)';
+        // Создаем эффект полета к пользователю - мощное увеличение
+        this.textElement.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        this.textElement.style.transform = 'scale(6)';
         
-        // Быстро заменяем на анимированный элемент
+        // Заменяем на анимированный элемент когда фон достаточно темный
         setTimeout(() => {
             // Скрываем оригинальный текст
             this.textElement.style.display = 'none';
             
             // Создаем элемент для анимации полета текста
             const transitionElement = document.createElement('div');
-            transitionElement.className = 'screen-fill-black';
+            
+            // Устанавливаем все стили сразу, чтобы избежать моргания
             transitionElement.textContent = 'live4code';
-            // Принудительно фиксируем только font-weight, остальное оставляем CSS классу
-            transitionElement.style.fontWeight = '800 !important';
+            transitionElement.style.cssText = `
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) scale(6) !important;
+                font-family: 'Montserrat', sans-serif !important;
+                font-weight: 400 !important;
+                font-size: clamp(3rem, 8vw, 6rem) !important;
+                color: #000000 !important;
+                z-index: 10000 !important;
+                pointer-events: none !important;
+                white-space: nowrap !important;
+                will-change: transform, opacity, text-shadow !important;
+                backface-visibility: hidden !important;
+                transform-style: preserve-3d !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                text-shadow: none !important;
+            `;
             document.body.appendChild(transitionElement);
-        }, 200);
+            
+            // Принудительно запускаем анимацию через небольшую задержку
+            setTimeout(() => {
+                transitionElement.style.animation = 'flyToUserText 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important';
+            }, 50);
+            
+            // Удаляем элемент сразу после завершения анимации
+            setTimeout(() => {
+                if (transitionElement && transitionElement.parentNode) {
+                    transitionElement.parentNode.removeChild(transitionElement);
+                }
+            }, 1850); // Точно по времени анимации
+        }, 500);
         
         setTimeout(() => {
+            // Принудительно удаляем все элементы с анимацией перед показом основного экрана
+            const remainingElements = document.querySelectorAll('[style*="flyToUserText"]');
+            remainingElements.forEach(el => {
+                if (el && el.parentNode) {
+                    el.parentNode.removeChild(el);
+                }
+            });
+            
+            // Удаляем только временные анимационные элементы с текстом "live4code"
+            const animationElements = Array.from(document.querySelectorAll('*')).filter(el => 
+                el.textContent === 'live4code' && 
+                el !== this.textElement && 
+                (el.style.position === 'fixed' || el.style.animation.includes('flyToUserText'))
+            );
+            animationElements.forEach(el => {
+                if (el && el.parentNode) {
+                    el.parentNode.removeChild(el);
+                }
+            });
+            
+            // Создаем эффект световых колец перед показом основного экрана
+            this.createLightRings();
+            
             // Сначала скрываем экран загрузки, но оставляем затемнение
             loadingScreen.style.display = 'none';
             mainScreen.classList.add('active');
-            
-            // Удаляем только текстовый элемент, оставляем затемнение на немного дольше
-            const transitionElement = document.querySelector('.screen-fill-black');
-            if (transitionElement && transitionElement.parentNode) {
-                transitionElement.parentNode.removeChild(transitionElement);
-            }
             
             // Убираем затемнение через небольшую задержку для плавного перехода
             setTimeout(() => {
@@ -391,7 +357,7 @@ class TypingAnimation {
             
             // Инициализируем анимации основного экрана
             this.initMainScreenAnimations();
-        }, 2000); // Скорректировано под новый быстрый переход
+        }, 500); // Сразу после полного затемнения
     }
 
     initMainScreenAnimations() {
@@ -412,6 +378,9 @@ class TypingAnimation {
         this.cubeController = new CubeController(this.audioVisualizer);
         console.log('Cube controller initialized:', this.cubeController);
         
+        // Показываем подсказку только на мобильных
+        this.showMobileHintIfNeeded();
+        
         // Запускаем аудио-визуализацию с небольшой задержкой
         setTimeout(() => {
             const cubeElement = document.getElementById('cube');
@@ -427,6 +396,65 @@ class TypingAnimation {
                 }
             }
         }, 1000);
+    }
+    
+    createLightRings() {
+        // Создаем контейнер для световых колец
+        const ringsContainer = document.createElement('div');
+        ringsContainer.className = 'light-rings-container';
+        ringsContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+        `;
+        document.body.appendChild(ringsContainer);
+        
+        // Создаем несколько колец с разными задержками
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const ring = document.createElement('div');
+                ring.className = 'light-ring';
+                ring.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 10px;
+                    height: 10px;
+                    border: 2px solid rgba(255, 255, 255, 0.8);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    animation: expandRing 1.5s ease-out forwards;
+                    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3);
+                `;
+                ringsContainer.appendChild(ring);
+                
+                // Удаляем кольцо после анимации
+                setTimeout(() => {
+                    if (ring.parentNode) {
+                        ring.parentNode.removeChild(ring);
+                    }
+                }, 1500);
+            }, i * 200);
+        }
+        
+        // Удаляем контейнер через 3 секунды
+        setTimeout(() => {
+            if (ringsContainer.parentNode) {
+                ringsContainer.parentNode.removeChild(ringsContainer);
+            }
+        }, 3000);
+    }
+
+    showMobileHintIfNeeded() {
+        // Мобильные подсказки отключены - используем навигационные кнопки
+        const mobileHint = document.getElementById('mobile-hint');
+        if (mobileHint) {
+            mobileHint.style.display = 'none';
+        }
     }
 }
 
@@ -483,6 +511,9 @@ class CubeController {
                 this.toggleMusic();
             });
         }
+        
+        // Добавляем сенсорное управление для мобильных
+        this.initTouchControls();
         
         // Добавляем обработчики для граней куба - только для видимых граней
         this.faces.forEach(face => {
@@ -712,6 +743,181 @@ class CubeController {
             }
         }, 3000);
     }
+    
+    // Сенсорное управление отключено - используем только кнопки навигации
+    initTouchControls() {
+        // Свайп-управление убрано, навигация только через кнопки
+        console.log('Touch controls disabled - using navigation buttons only');
+    }
+}
+
+// Мобильный слайдер
+class MobileSlider {
+    constructor() {
+        this.currentSlide = 0;
+        this.totalSlides = 6;
+        this.isAnimating = false;
+        
+        this.container = document.getElementById('mobile-slider');
+        this.slidesWrapper = document.getElementById('mobile-slides-wrapper');
+        this.prevBtn = document.getElementById('mobile-prev-btn');
+        this.nextBtn = document.getElementById('mobile-next-btn');
+        this.indicators = document.querySelectorAll('.mobile-slide-indicator');
+        
+        this.init();
+    }
+    
+    init() {
+        if (!this.container) return;
+        
+        this.setupEventListeners();
+        this.updateSlide(0, false);
+    }
+    
+    setupEventListeners() {
+        // Кнопки навигации
+        this.prevBtn?.addEventListener('click', () => this.prevSlide());
+        this.nextBtn?.addEventListener('click', () => this.nextSlide());
+        
+        // Индикаторы
+        this.indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => this.goToSlide(index));
+        });
+        
+        // Клавиатурная навигация (только для мобильных)
+        document.addEventListener('keydown', (e) => this.handleKeyNavigation(e));
+        
+        // Touch события для свайпов (только на мобильных слайдах)
+        this.setupTouchEvents();
+    }
+    
+    setupTouchEvents() {
+        if (!this.container) return;
+        
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+        let isVerticalScroll = false;
+        
+        this.container.addEventListener('touchstart', (e) => {
+            if (!this.isMobileMode()) return;
+            
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            isVerticalScroll = false;
+        }, { passive: true });
+        
+        this.container.addEventListener('touchmove', (e) => {
+            if (!this.isMobileMode() || !isDragging) return;
+            
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const deltaX = Math.abs(currentX - startX);
+            const deltaY = Math.abs(currentY - startY);
+            
+            // Определяем направление скролла
+            if (deltaY > deltaX && deltaY > 10) {
+                isVerticalScroll = true;
+            }
+        }, { passive: true });
+        
+        this.container.addEventListener('touchend', (e) => {
+            if (!this.isMobileMode() || !isDragging || isVerticalScroll) {
+                isDragging = false;
+                return;
+            }
+            
+            const endX = e.changedTouches[0].clientX;
+            const deltaX = endX - startX;
+            const threshold = 50; // Минимальное расстояние для свайпа
+            
+            if (Math.abs(deltaX) > threshold) {
+                if (deltaX > 0) {
+                    // Свайп вправо - предыдущий слайд
+                    this.prevSlide();
+                } else {
+                    // Свайп влево - следующий слайд
+                    this.nextSlide();
+                }
+            }
+            
+            isDragging = false;
+        }, { passive: true });
+    }
+    
+
+    
+    handleKeyNavigation(e) {
+        if (!this.isMobileMode()) return;
+        
+        switch(e.key) {
+            case 'ArrowLeft':
+                e.preventDefault();
+                this.prevSlide();
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                this.nextSlide();
+                break;
+        }
+    }
+    
+    prevSlide() {
+        if (this.isAnimating) return;
+        
+        const newSlide = this.currentSlide === 0 ? this.totalSlides - 1 : this.currentSlide - 1;
+        this.goToSlide(newSlide);
+    }
+    
+    nextSlide() {
+        if (this.isAnimating) return;
+        
+        const newSlide = this.currentSlide === this.totalSlides - 1 ? 0 : this.currentSlide + 1;
+        this.goToSlide(newSlide);
+    }
+    
+    goToSlide(slideIndex) {
+        if (this.isAnimating || slideIndex === this.currentSlide) return;
+        
+        this.updateSlide(slideIndex, true);
+    }
+    
+    updateSlide(slideIndex, animate = true) {
+        if (animate) {
+            this.isAnimating = true;
+        }
+        
+        this.currentSlide = slideIndex;
+        
+        // Обновляем позицию слайдера
+        const translateX = -slideIndex * 100; // Каждый слайд сдвигается на 100vw
+        this.slidesWrapper.style.transform = `translateX(${translateX}vw)`;
+        
+        // Обновляем индикаторы
+        this.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === slideIndex);
+        });
+        
+        // Haptic feedback (если поддерживается)
+        this.triggerHapticFeedback();
+        
+        if (animate) {
+            setTimeout(() => {
+                this.isAnimating = false;
+            }, 400);
+        }
+    }
+    
+    triggerHapticFeedback() {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(10); // Короткая вибрация
+        }
+    }
+    
+    isMobileMode() {
+        return window.innerWidth <= 768;
+    }
 }
 
 // Audio Visualizer для ambient эффектов
@@ -923,7 +1129,30 @@ class StarfieldManager {
         this.shootingStarInterval = null;
         this.particleInterval = null;
         this.asteroidInterval = null;
+        
+        // Определяем производительность устройства
+        this.isMobile = this.detectMobile();
+        this.isLowPerformance = this.detectLowPerformance();
+        
         this.init();
+    }
+    
+    // Определение мобильного устройства
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               window.innerWidth <= 768;
+    }
+    
+    // Определение слабого устройства
+    detectLowPerformance() {
+        // Простая эвристика для определения производительности
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        
+        if (!gl) return true; // Нет WebGL - слабое устройство
+        
+        // Проверяем количество ядер процессора
+        return navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
     }
 
     init() {
@@ -934,15 +1163,17 @@ class StarfieldManager {
     }
 
     startShootingStars() {
-        // Создаем больше звезд для эффекта полета
+        // Адаптируем количество звезд под производительность устройства
+        const starCount = this.isLowPerformance ? 2 : this.isMobile ? 3 : 5;
+        const interval = this.isLowPerformance ? 2000 : this.isMobile ? 1500 : 1000;
+        
         this.shootingStarInterval = setInterval(() => {
-            // Создаем больше звезд одновременно для плотного эффекта
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < starCount; i++) {
                 setTimeout(() => {
                     this.createShootingStar();
                 }, i * 150);
             }
-        }, 1000 + Math.random() * 1500); // Каждые 1-2.5 секунды
+        }, interval + Math.random() * 1500);
     }
 
     createShootingStar() {
@@ -970,11 +1201,17 @@ class StarfieldManager {
         const endX = Math.cos(startAngle) * endDistance;
         const endY = Math.sin(startAngle) * endDistance;
         
+        // Ограничиваем позиции границами экрана
+        const maxX = window.innerWidth / 2 - 50;
+        const maxY = window.innerHeight / 2 - 50;
+        const clampedEndX = Math.max(-maxX, Math.min(maxX, endX));
+        const clampedEndY = Math.max(-maxY, Math.min(maxY, endY));
+        
         // Устанавливаем CSS переменные для начальной и конечной позиции
         shootingStar.style.setProperty('--start-x', startX + 'px');
         shootingStar.style.setProperty('--start-y', startY + 'px');
-        shootingStar.style.setProperty('--end-x', endX + 'px');
-        shootingStar.style.setProperty('--end-y', endY + 'px');
+        shootingStar.style.setProperty('--end-x', clampedEndX + 'px');
+        shootingStar.style.setProperty('--end-y', clampedEndY + 'px');
         
         // Случайная задержка
         shootingStar.style.animationDelay = Math.random() * 3 + 's';
@@ -988,19 +1225,21 @@ class StarfieldManager {
             if (shootingStar.parentNode) {
                 shootingStar.parentNode.removeChild(shootingStar);
             }
-        }, duration + 3000);
+        }, duration + 1000); // Уменьшаем время ожидания
     }
 
     startSpaceParticles() {
-        // Создаем больше частиц для плотного эффекта
+        // Адаптируем количество частиц под производительность устройства
+        const particleCount = this.isLowPerformance ? 4 : this.isMobile ? 8 : 12;
+        const interval = this.isLowPerformance ? 1000 : this.isMobile ? 750 : 500;
+        
         this.particleInterval = setInterval(() => {
-            // Создаем еще больше частиц для заполнения пространства
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < particleCount; i++) {
                 setTimeout(() => {
                     this.createParticle();
                 }, i * 60);
             }
-        }, 500); // Каждые 0.5 секунды
+        }, interval);
     }
 
     createParticle() {
@@ -1028,11 +1267,17 @@ class StarfieldManager {
         const endX = Math.cos(startAngle) * endDistance;
         const endY = Math.sin(startAngle) * endDistance;
         
+        // Ограничиваем позиции границами экрана
+        const maxX = window.innerWidth / 2 - 50;
+        const maxY = window.innerHeight / 2 - 50;
+        const clampedEndX = Math.max(-maxX, Math.min(maxX, endX));
+        const clampedEndY = Math.max(-maxY, Math.min(maxY, endY));
+        
         // Устанавливаем CSS переменные для начальной и конечной позиции
         particle.style.setProperty('--start-x', startX + 'px');
         particle.style.setProperty('--start-y', startY + 'px');
-        particle.style.setProperty('--end-x', endX + 'px');
-        particle.style.setProperty('--end-y', endY + 'px');
+        particle.style.setProperty('--end-x', clampedEndX + 'px');
+        particle.style.setProperty('--end-y', clampedEndY + 'px');
         
         // Случайная задержка
         particle.style.animationDelay = Math.random() * 4 + 's';
@@ -1050,10 +1295,13 @@ class StarfieldManager {
     }
 
     startAsteroids() {
-        // Создаем астероиды реже чем звезды
+        // Адаптируем частоту астероидов под производительность устройства
+        const baseInterval = this.isLowPerformance ? 8000 : this.isMobile ? 6000 : 4000;
+        const randomInterval = this.isLowPerformance ? 4000 : 6000;
+        
         this.asteroidInterval = setInterval(() => {
             this.createAsteroid();
-        }, 4000 + Math.random() * 6000); // Каждые 4-10 секунд
+        }, baseInterval + Math.random() * randomInterval);
     }
 
     createAsteroid() {
@@ -1125,6 +1373,7 @@ class GitHubProjectsManager {
 
     async init() {
         this.projectsContainer = document.getElementById('projects-content');
+        this.mobileProjectsContainer = document.getElementById('mobile-projects-content');
         await this.loadProjects();
     }
 
@@ -1167,18 +1416,23 @@ class GitHubProjectsManager {
     }
 
     showLoading() {
-        if (!this.projectsContainer) return;
-        
-        this.projectsContainer.innerHTML = `
+        const loadingHTML = `
             <div class="projects-loading">
                 <i class="fas fa-spinner fa-spin"></i>
                 <span>Загружаю проекты...</span>
             </div>
         `;
+        
+        if (this.projectsContainer) {
+            this.projectsContainer.innerHTML = loadingHTML;
+        }
+        if (this.mobileProjectsContainer) {
+            this.mobileProjectsContainer.innerHTML = loadingHTML;
+        }
     }
 
     renderProjects(projects) {
-        if (!this.projectsContainer) return;
+        if (!this.projectsContainer && !this.mobileProjectsContainer) return;
 
         if (projects.length === 0) {
             this.showError('Проекты не найдены');
@@ -1213,13 +1467,18 @@ class GitHubProjectsManager {
             </div>
         `;
 
-        this.projectsContainer.innerHTML = projectsHTML + githubLinkHTML;
+        const fullHTML = projectsHTML + githubLinkHTML;
+        
+        if (this.projectsContainer) {
+            this.projectsContainer.innerHTML = fullHTML;
+        }
+        if (this.mobileProjectsContainer) {
+            this.mobileProjectsContainer.innerHTML = fullHTML;
+        }
     }
 
     showError(message = 'Не удалось загрузить проекты') {
-        if (!this.projectsContainer) return;
-        
-        this.projectsContainer.innerHTML = `
+        const errorHTML = `
             <div class="projects-error">
                 <i class="fas fa-exclamation-triangle"></i>
                 <p>${message}</p>
@@ -1228,6 +1487,13 @@ class GitHubProjectsManager {
                 </button>
             </div>
         `;
+        
+        if (this.projectsContainer) {
+            this.projectsContainer.innerHTML = errorHTML;
+        }
+        if (this.mobileProjectsContainer) {
+            this.mobileProjectsContainer.innerHTML = errorHTML;
+        }
     }
 
     // Метод для принудительного обновления
@@ -1240,13 +1506,13 @@ class GitHubProjectsManager {
 // Initialize application
 class App {
     constructor() {
-        this.videoManager = new VideoManager();
         this.audioManager = new AudioManager();
         this.audioVisualizer = new AudioVisualizer();
-        this.typingAnimation = new TypingAnimation(this.audioManager, this.videoManager, this.audioVisualizer);
+        this.typingAnimation = new TypingAnimation(this.audioManager, this.audioVisualizer);
         this.visibilityManager = new VisibilityManager();
         this.starfieldManager = null;
         this.githubManager = new GitHubProjectsManager();
+        this.mobileSlider = new MobileSlider();
         
         this.init();
     }
