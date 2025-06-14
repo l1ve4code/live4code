@@ -28,9 +28,9 @@ class AudioManager {
                 this.fingerSnapSound = new Audio('sounds/finger-snap.mp3');
                 this.fingerSnapSound.preload = 'auto';
                 this.fingerSnapSound.volume = 0.8;
-                console.log('Звук finger-snap загружен');
+
             } catch (error) {
-                console.log('Не удалось загрузить finger-snap.mp3');
+                // Не удалось загрузить finger-snap.mp3
             }
 
             // Пытаемся загрузить реальные звуки клавиатуры
@@ -43,7 +43,7 @@ class AudioManager {
                     audio.volume = 0.3;
                     this.sounds.push(audio);
                 } catch (error) {
-                    console.log(`Не удалось загрузить ${file}, будем использовать синтетические звуки`);
+                    // Файл не найден, будем использовать синтетические звуки
                 }
             }
 
@@ -54,7 +54,7 @@ class AudioManager {
 
             this.isAudioEnabled = true;
         } catch (error) {
-            console.log('Инициализация аудио не удалась:', error);
+            // Инициализация аудио не удалась
         }
     }
 
@@ -70,7 +70,7 @@ class AudioManager {
                 this.sounds.push(buffer);
             }
         } catch (error) {
-            console.log('Создание синтетических звуков не удалось:', error);
+            // Создание синтетических звуков не удалось
         }
     }
 
@@ -110,7 +110,7 @@ class AudioManager {
 
             this.currentSoundIndex = (this.currentSoundIndex + 1) % this.sounds.length;
         } catch (error) {
-            console.log('Воспроизведение звука не удалось:', error);
+            // Воспроизведение звука не удалось
         }
     }
 
@@ -120,9 +120,8 @@ class AudioManager {
         try {
             this.fingerSnapSound.currentTime = 0;
             await this.fingerSnapSound.play();
-            console.log('Проигрываем finger-snap');
         } catch (error) {
-            console.log('Ошибка воспроизведения finger-snap:', error);
+            // Ошибка воспроизведения finger-snap
         }
     }
 
@@ -219,11 +218,8 @@ class TypingAnimation {
     }
 
     transitionToMainScreen() {
-        console.log('Transitioning to main screen');
         const loadingScreen = document.getElementById('loading-screen');
         const mainScreen = document.getElementById('main-screen');
-        console.log('Loading screen:', loadingScreen);
-        console.log('Main screen:', mainScreen);
         
         // Создаем динамически затемняющийся фон в зависимости от приближения текста
         const darkeningOverlay = document.createElement('div');
@@ -361,8 +357,6 @@ class TypingAnimation {
     }
 
     initMainScreenAnimations() {
-        console.log('Initializing main screen animations');
-        
         // Инициализируем звездное небо
         if (window.app && window.app.starfieldManager) {
             window.app.starfieldManager.destroy();
@@ -376,7 +370,6 @@ class TypingAnimation {
         
         // Инициализируем 3D куб с аудио-визуализатором
         this.cubeController = new CubeController(this.audioVisualizer);
-        console.log('Cube controller initialized:', this.cubeController);
         
         // Показываем подсказку только на мобильных
         this.showMobileHintIfNeeded();
@@ -548,10 +541,7 @@ class CubeController {
             });
         });
         
-        // Добавляем клавиатурную навигацию
-        document.addEventListener('keydown', (e) => {
-            this.handleKeyNavigation(e);
-        });
+        // Клавиатурная навигация отключена
         
         // Добавляем подсказки для пользователя
         this.showNavigationHints();
@@ -574,7 +564,7 @@ class CubeController {
     rotateTo(face) {
         if (this.currentFace === face) return;
         
-        console.log(`Rotating cube from ${this.currentFace} to ${face}`);
+
         
         // Убираем все классы состояний
         this.cube.classList.remove(
@@ -585,7 +575,7 @@ class CubeController {
         // Добавляем новый класс состояния
         this.cube.classList.add(`show-${face}`);
         
-        console.log(`Cube classes after rotation:`, this.cube.className);
+
         
         // Обновляем активную кнопку навигации
         this.updateActiveButton(face);
@@ -610,28 +600,7 @@ class CubeController {
     }
     
     handleKeyNavigation(e) {
-        const keyMap = {
-            'ArrowUp': 'top',
-            'ArrowDown': 'bottom',
-            'ArrowLeft': 'left',
-            'ArrowRight': 'right',
-            'KeyW': 'top',
-            'KeyS': 'bottom',
-            'KeyA': 'left',
-            'KeyD': 'right',
-            'Digit1': 'front',
-            'Digit2': 'right',
-            'Digit3': 'back',
-            'Digit4': 'left',
-            'Digit5': 'top',
-            'Digit6': 'bottom'
-        };
-        
-        const targetFace = keyMap[e.code];
-        if (targetFace) {
-            e.preventDefault();
-            this.rotateTo(targetFace);
-        }
+        // Клавиатурное управление отключено - используйте кнопки навигации
     }
     
     playRotationSound() {
@@ -666,9 +635,7 @@ class CubeController {
             <div class="hint-content">
                 <h3>Навигация по кубу</h3>
                 <p>• Кликайте по видимым граням</p>
-                <p>• Используйте кнопки справа</p>
-                <p>• Стрелки или WASD</p>
-                <p>• Цифры 1-6</p>
+                <p>• Используйте кнопки навигации справа</p>
             </div>
         `;
         
@@ -747,7 +714,7 @@ class CubeController {
     // Сенсорное управление отключено - используем только кнопки навигации
     initTouchControls() {
         // Свайп-управление убрано, навигация только через кнопки
-        console.log('Touch controls disabled - using navigation buttons only');
+        // Touch controls disabled - using navigation buttons only
     }
 }
 
@@ -784,8 +751,7 @@ class MobileSlider {
             indicator.addEventListener('click', () => this.goToSlide(index));
         });
         
-        // Клавиатурная навигация (только для мобильных)
-        document.addEventListener('keydown', (e) => this.handleKeyNavigation(e));
+        // Клавиатурная навигация отключена
         
         // Touch события для свайпов (только на мобильных слайдах)
         this.setupTouchEvents();
@@ -849,18 +815,7 @@ class MobileSlider {
 
     
     handleKeyNavigation(e) {
-        if (!this.isMobileMode()) return;
-        
-        switch(e.key) {
-            case 'ArrowLeft':
-                e.preventDefault();
-                this.prevSlide();
-                break;
-            case 'ArrowRight':
-                e.preventDefault();
-                this.nextSlide();
-                break;
-        }
+        // Клавиатурная навигация отключена - используйте кнопки или свайпы
     }
     
     prevSlide() {
@@ -941,7 +896,7 @@ class AudioVisualizer {
         try {
             // Определяем протокол
             this.isLocalFile = window.location.protocol === 'file:';
-            console.log('Protocol:', window.location.protocol, 'Local file:', this.isLocalFile);
+    
             
             // Создаем аудио элемент для фоновой музыки
             this.backgroundMusic = new Audio('sounds/background.mp3');
@@ -951,7 +906,7 @@ class AudioVisualizer {
             
             // Добавляем обработчики событий для отладки
             this.backgroundMusic.addEventListener('loadeddata', () => {
-                console.log('Background music file loaded successfully');
+
             });
             
             this.backgroundMusic.addEventListener('error', (e) => {
@@ -959,10 +914,10 @@ class AudioVisualizer {
             });
             
             this.backgroundMusic.addEventListener('canplaythrough', () => {
-                console.log('Background music ready to play');
+
             });
             
-            console.log('Background music element created');
+
             
             // Инициализируем Web Audio API только для HTTP протокола
             if (!this.isLocalFile) {
@@ -982,17 +937,17 @@ class AudioVisualizer {
                     source.connect(this.analyser);
                     this.analyser.connect(this.audioContext.destination);
                     
-                    console.log('Web Audio API initialized successfully');
+    
                 } catch (audioError) {
                     console.warn('Web Audio API failed, using simple mode:', audioError);
                     this.simpleMode = true;
                 }
             } else {
-                console.log('Local file detected, using simple audio mode without Web Audio API');
+
                 this.simpleMode = true;
             }
             
-            console.log('Audio visualizer initialized successfully');
+
             
         } catch (error) {
             console.error('Audio visualizer initialization failed:', error);
@@ -1001,10 +956,7 @@ class AudioVisualizer {
     }
     
     async startVisualization(cubeElement) {
-        console.log('Starting audio visualization...');
-        console.log('Background music:', this.backgroundMusic);
-        console.log('Simple mode:', this.simpleMode);
-        console.log('Cube element:', cubeElement);
+
         
         if (!this.backgroundMusic) {
             console.error('Background music not ready');
@@ -1017,17 +969,17 @@ class AudioVisualizer {
         try {
             // Возобновляем аудио контекст если есть и приостановлен
             if (this.audioContext && this.audioContext.state === 'suspended') {
-                console.log('Resuming audio context...');
+
                 await this.audioContext.resume();
             }
             
             if (this.audioContext) {
-                console.log('Audio context state:', this.audioContext.state);
+    
             }
             
             // Запускаем музыку с плавным появлением
             this.backgroundMusic.volume = 0;
-            console.log('Starting music playback...');
+
             await this.backgroundMusic.play();
             this.fadeInMusic();
             
@@ -1036,7 +988,7 @@ class AudioVisualizer {
             // Запускаем анимацию (в простом режиме будет без анализа частот)
             this.animate();
             
-            console.log('Audio visualization started successfully');
+
             
         } catch (error) {
             console.error('Failed to start audio visualization:', error);
@@ -1096,7 +1048,7 @@ class AudioVisualizer {
             this.backgroundMusic.currentTime = 0;
         }
         
-        console.log('Audio visualization stopped');
+        
     }
     
     // Управление громкостью
@@ -1530,20 +1482,16 @@ class App {
         const startPrompt = document.getElementById('start-prompt');
         const typingContainer = document.getElementById('typing-container');
         
-        console.log('App initialized, setting up event listeners');
-        console.log('Start prompt:', startPrompt);
-        console.log('Typing container:', typingContainer);
+
         
         if (startPrompt) {
             startPrompt.addEventListener('click', async () => {
-                console.log('Start prompt clicked');
                 // Hide prompt and show typing container
                 startPrompt.style.display = 'none';
                 typingContainer.style.display = 'flex';
                 
                 // Small delay for smoothness
                 setTimeout(() => {
-                    console.log('Starting typing animation');
                     this.typingAnimation.start();
                 }, 300);
             });

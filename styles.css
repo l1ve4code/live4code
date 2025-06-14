@@ -216,21 +216,7 @@ body {
 }
 
 /* Анимация полета текста к пользователю */
-/* Удаляем CSS класс, так как используем inline стили для предотвращения моргания */
-.screen-fill-black-unused {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-    font-size: clamp(3rem, 8vw, 6rem);
-    color: #000000;
-    z-index: 10000;
-    pointer-events: none;
-    white-space: nowrap;
-    animation: flyToUserText 1.8s cubic-bezier(0.68, 0.0, 0.265, 1.2) forwards;
-}
+
 
 /* Main Screen Styles - Inside 3D Cube */
 #main-screen {
@@ -786,32 +772,7 @@ body {
     line-height: 1.2;
 }
 
-.motto {
-    color: var(--primary-color);
-    font-style: italic;
-    font-size: clamp(1rem, 2.2vw, 1.3rem);
-    margin-bottom: 0 !important;
-}
 
-.education-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.education-info p {
-    color: var(--primary-color);
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-    margin: 0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.education-info i {
-    color: var(--primary-color);
-}
 
 .principles-section {
     margin-bottom: 2rem;
@@ -895,39 +856,7 @@ body {
     font-size: 1.2em;
 }
 
-.education-section {
-    margin: 1.5rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
 
-.education-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border-left: 3px solid var(--primary-color);
-    transition: all 0.3s ease;
-}
-
-.education-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
-}
-
-.education-item i {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-    min-width: 24px;
-}
-
-.education-item span {
-    color: #ffffff;
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-}
 
 .stats {
     margin-top: 2rem;
@@ -1080,31 +1009,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.timeline {
-    margin-top: 2rem;
-}
 
-.timeline-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.02);
-}
-
-.year {
-    font-weight: 700;
-    color: #ffffff;
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-}
-
-.event {
-    color: #cccccc;
-    font-size: clamp(0.9rem, 2vw, 1rem);
-}
 
 /* Projects грань */
 .projects-content {
