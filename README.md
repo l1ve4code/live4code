@@ -1,4 +1,4 @@
-# live4code - Interactive Portfolio
+# Interactive Portfolio
 
 An immersive 3D interactive portfolio showcasing software engineering expertise with a cosmic theme and modern web technologies.
 
