@@ -25,6 +25,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <!-- Safari Browser Warning -->
+    <div id="safari-warning" class="safari-warning hidden">
+        <div class="safari-warning-content">
+            <div class="safari-warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="safari-warning-text">
+                <h3>Внимание!</h3>
+                <p>Некоторые функции могут работать некорректно в Safari. Рекомендуем использовать Chrome, Firefox или Edge для лучшего опыта.</p>
+            </div>
+            <button class="safari-warning-close" id="safari-warning-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Экран загрузки -->
     <div id="loading-screen" class="screen active">
         <div class="loading-content">

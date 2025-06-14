@@ -1455,6 +1455,89 @@ class GitHubProjectsManager {
     }
 }
 
+// Safari Warning Manager
+class SafariWarningManager {
+    constructor() {
+        this.warningElement = null;
+        this.closeButton = null;
+        this.storageKey = 'safari-warning-dismissed';
+        this.init();
+    }
+
+    init() {
+        // Проверяем, является ли браузер Safari
+        if (!this.isSafari()) {
+            return;
+        }
+
+        // Проверяем, было ли уведомление уже закрыто
+        if (this.isDismissed()) {
+            return;
+        }
+
+        this.setupElements();
+        this.showWarning();
+    }
+
+    isSafari() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const vendor = navigator.vendor?.toLowerCase() || '';
+        
+        // Проверяем Safari, исключая Chrome и другие браузеры на WebKit
+        return (
+            vendor.includes('apple') &&
+            userAgent.includes('safari') &&
+            !userAgent.includes('chrome') &&
+            !userAgent.includes('chromium') &&
+            !userAgent.includes('edg') &&
+            !userAgent.includes('firefox')
+        );
+    }
+
+    isDismissed() {
+        try {
+            return localStorage.getItem(this.storageKey) === 'true';
+        } catch (e) {
+            return false;
+        }
+    }
+
+    setupElements() {
+        this.warningElement = document.getElementById('safari-warning');
+        this.closeButton = document.getElementById('safari-warning-close');
+
+        if (this.closeButton) {
+            this.closeButton.addEventListener('click', () => this.dismissWarning());
+        }
+
+        // Автоматическое скрытие через 10 секунд
+        setTimeout(() => {
+            if (this.warningElement && !this.warningElement.classList.contains('hidden')) {
+                this.dismissWarning();
+            }
+        }, 10000);
+    }
+
+    showWarning() {
+        if (this.warningElement) {
+            this.warningElement.classList.remove('hidden');
+        }
+    }
+
+    dismissWarning() {
+        if (this.warningElement) {
+            this.warningElement.classList.add('hidden');
+            
+            // Сохраняем состояние в localStorage
+            try {
+                localStorage.setItem(this.storageKey, 'true');
+            } catch (e) {
+                // localStorage недоступен
+            }
+        }
+    }
+}
+
 // Initialize application
 class App {
     constructor() {
@@ -1465,6 +1548,7 @@ class App {
         this.starfieldManager = null;
         this.githubManager = new GitHubProjectsManager();
         this.mobileSlider = new MobileSlider();
+        this.safariWarning = new SafariWarningManager();
         
         this.init();
     }
