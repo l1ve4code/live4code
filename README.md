@@ -4,6 +4,8 @@
 
 An immersive 3D interactive portfolio showcasing software engineering expertise with a cosmic theme and modern web technologies.
 
+![Product image](resources/image.png)
+
 ## 🚀 Features
 
 ### Interactive 3D Experience
